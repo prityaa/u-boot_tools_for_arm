@@ -1,0 +1,19 @@
+
+1 . apply the patch in u-boot
+	* it will change Makefile, depfix utility that will compiled for
+	host x86 and will be used while compile u-boot for dependancies
+	manualy compile is for scripts/basic/fixdep.c for x86
+	gcc fixdep.c -o fixdep
+
+	* same for ./scripts/kconfig/conf
+
+
+2 . compile the openssl for arm as mentioined in README_compile_for_arm
+
+	in makefile we have linked by HOSTLDFLAGS=
+
+
+3 . run make ARCH=arm HOSTCC=arm-buildroot-linux-uclibcgnueabihf-gcc HOSTSTRIP=arm-buildroot-linux-uclibcgnueabihf-strip CROSS_COMPILE=arm-buildroot-linux-uclibcgnueabihf- tools
+
+4 . READ top level README
+

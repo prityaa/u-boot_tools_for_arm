@@ -1,0 +1,122 @@
+From 4170d478782a76ac5be4e50719d23096ce3db77e Mon Sep 17 00:00:00 2001
+From: prityaa <pritammsutar660@gmail.com>
+Date: Sun, 22 Apr 2018 15:47:30 +0530
+Subject: [PATCH] tools compiled for arm
+
+Signed-off-by: prityaa <pritammsutar660@gmail.com>
+---
+ Makefile                 |  4 +++-
+ arch/arm/config.mk       |  4 ++--
+ scripts/basic/Makefile   |  4 ++--
+ scripts/kconfig/Makefile | 14 +++++++-------
+ tools/Makefile           |  2 ++
+ 5 files changed, 16 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 64351eb769..11abba4629 100644
+--- a/Makefile
++++ b/Makefile
+@@ -294,6 +294,8 @@ HOSTLDFLAGS += $(call os_x_before, 10, 5, "-multiply_defined suppress")
+ HOSTLDFLAGS += $(call os_x_before, 10, 7, "", "-Xlinker -no_pie")
+ endif
+ 
++HOSTLDFLAGS += -L /home/prityaa/documents/packages/tools/openssl/openssl -lcrypto -lssl
++
+ # Decide whether to build built-in, modular, or both.
+ # Normally, just do built-in.
+ 
+@@ -1354,7 +1356,7 @@ PHONY += $(u-boot-dirs)
+ $(u-boot-dirs): prepare scripts
+ 	$(Q)$(MAKE) $(build)=$@
+ 
+-tools: prepare
++tools: #prepare
+ # The "tools" are needed early
+ $(filter-out tools, $(u-boot-dirs)): tools
+ # The "examples" conditionally depend on U-Boot (say, when USE_PRIVATE_LIBGCC
+diff --git a/arch/arm/config.mk b/arch/arm/config.mk
+index 9c213b897c..4014586f6e 100644
+--- a/arch/arm/config.mk
++++ b/arch/arm/config.mk
+@@ -51,7 +51,7 @@ endif
+ 
+ # Only test once
+ ifeq ($(CONFIG_$(SPL_)SYS_THUMB_BUILD),y)
+-archprepare: checkthumb checkgcc6
++archprepare: checkthumb #checkgcc6
+ 
+ checkthumb:
+ 	@if test "$(call cc-name)" = "gcc" -a \
+@@ -62,7 +62,7 @@ checkthumb:
+ 		false; \
+ 	fi
+ else
+-archprepare: checkgcc6
++archprepare: #checkgcc6
+ endif
+ 
+ checkgcc6:
+diff --git a/scripts/basic/Makefile b/scripts/basic/Makefile
+index f883857b54..61791bfa08 100644
+--- a/scripts/basic/Makefile
++++ b/scripts/basic/Makefile
+@@ -11,8 +11,8 @@
+ # SPDX-License-Identifier:	GPL-2.0
+ #
+ 
+-hostprogs-y	:= fixdep
++#hostprogs-y	:= fixdep
+ always		:= $(hostprogs-y)
+ 
+ # fixdep is needed to compile other host programs
+-$(addprefix $(obj)/,$(filter-out fixdep,$(always))): $(obj)/fixdep
++#$(addprefix $(obj)/,$(filter-out fixdep,$(always))): $(obj)/fixdep
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index af23812611..c8c793beaa 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -36,17 +36,17 @@ gconfig: $(obj)/gconf
+ menuconfig: $(obj)/mconf
+ 	$< $(silent) $(Kconfig)
+ 
+-config: $(obj)/conf
+-	$< $(silent) --oldaskconfig $(Kconfig)
++#config: $(obj)/conf
++#	$< $(silent) --oldaskconfig $(Kconfig)
+ 
+ nconfig: $(obj)/nconf
+ 	$< $(silent) $(Kconfig)
+ 
+-silentoldconfig: $(obj)/conf
+-	$(Q)mkdir -p include/config include/generated
+-	$(Q)test -e include/generated/autoksyms.h || \
+-	    touch   include/generated/autoksyms.h
+-	$< $(silent) --$@ $(Kconfig)
++#silentoldconfig: $(obj)/conf
++#	$(Q)mkdir -p include/config include/generated
++#	$(Q)test -e include/generated/autoksyms.h || \
++#	    touch   include/generated/autoksyms.h
++#	$< $(silent) --$@ $(Kconfig)
+ 
+ localyesconfig localmodconfig: $(obj)/streamline_config.pl $(obj)/conf
+ 	$(Q)mkdir -p include/config include/generated
+diff --git a/tools/Makefile b/tools/Makefile
+index 8143c25666..3fae55428b 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -248,10 +248,12 @@ HOST_EXTRACFLAGS += -include $(srctree)/include/compiler.h \
+ 		$(patsubst -I%,-idirafter%, $(filter -I%, $(UBOOTINCLUDE))) \
+ 		-I$(srctree)/scripts/dtc/libfdt \
+ 		-I$(srctree)/tools \
++		-I/home/prityaa/documents/packages/tools/openssl/openssl/include/ \
+ 		-DUSE_HOSTCC \
+ 		-D__KERNEL_STRICT_NAMES \
+ 		-D_GNU_SOURCE
+ 
++
+ __build:	$(LOGO-y)
+ 
+ $(LOGO_H):	$(obj)/bmp_logo $(LOGO_BMP)
+-- 
+2.14.1
+

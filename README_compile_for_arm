@@ -1,0 +1,11 @@
+export PATH=$INSTALLDIR/bin:$PATH
+export TARGETMACH=arm-buildroot-linux-uclibcgnueabihf
+export BUILDMACH=arm-buildroot-linux-uclibcgnueabihf
+export CROSS=arm-buildroot-linux-uclibcgnueabihf-
+export CC=${CROSS}-gcc
+export LD=${CROSS}-ld
+export AS=${CROSS}-as
+export AR=${CROSS}-ar
+
+Cross compile openssl
+https://stackoverflow.com/questions/20181372/cross-compiling-openssl-error
